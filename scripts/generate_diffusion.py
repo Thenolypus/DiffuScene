@@ -221,6 +221,10 @@ def main(argv):
     objects_dataset = ThreedFutureDataset.from_pickled_dataset(
         args.path_to_pickled_3d_futute_models
     )
+    # Hack: hardcoded paths to pretrained models
+    for obj in objects_dataset.objects:
+        obj.path_to_models = "../dataset/3D-FUTURE-model/"  # Your actual path
+
     print("Loaded {} 3D-FUTURE models".format(len(objects_dataset)))
 
     raw_dataset, dataset = get_dataset_raw_and_encoded(

@@ -61,6 +61,21 @@ import sys
 from operator import methodcaller
 
 import nltk
+# --- AUTO-DOWNLOAD FIX ---
+# Check if the required data exists; if not, download it silently.
+try:
+    nltk.data.find('corpora/cmudict.zip')
+except LookupError:
+    print("Downloading missing NLTK data: cmudict...")
+    nltk.download('cmudict')
+    
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    print("Downloading missing NLTK data: punkt...")
+    nltk.download('punkt')
+# -------------------------
+
 from nltk.corpus import cmudict
 
 """

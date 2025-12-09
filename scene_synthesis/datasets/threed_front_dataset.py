@@ -617,7 +617,10 @@ class OrderedDataset(DatasetDecoratorBase):
 
 ####
 import random
-import torchtext
+try:
+    import torchtext
+except ImportError:
+    torchtext = None  # Soft fail: allows the script to continue loading
 from num2words import num2words
 from nltk.tokenize import word_tokenize
 from .utils_text import compute_rel, get_article
@@ -639,7 +642,11 @@ class Add_Text(DatasetDecoratorBase):
         super().__init__(dataset)
         self.eval = eval
         self.max_sentences = max_sentences
-        self.glove = torchtext.vocab.GloVe(name="6B", dim=50, cache='/cluster/balrog/jtang/DiffuScene/.vector_cache') 
+        if torchtext is not None:
+            self.glove = torchtext.vocab.GloVe(name="6B", dim=50, cache='/cluster/balrog/jtang/DiffuScene/.vector_cache')
+        else:
+            self.glove = None
+            print("WARNING: torchtext not found. Text embeddings will fail if used.")
         self.max_token_length = max_token_length
 
     def __getitem__(self, idx):
